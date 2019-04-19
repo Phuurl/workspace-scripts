@@ -1,0 +1,39 @@
+- hosts: all
+
+  tasks:
+    - name: "check if homebrew is installed"
+      stat:
+        path: /usr/local/bin/brew
+      register: brew_status
+
+    - block:
+        - name: "install homebrew packages"
+          homebrew:
+            name: ansible,fish,git,htop,neofetch,node,python,terraform,tree,xz
+            state: present
+            update_homebrew: yes
+
+        - name: "install homebrew casks"
+          homebrew_cask:
+            name: atom,bbedit,cyberduck,discord,github,google-chrome,jetbrains-toolbox,messenger,spotify
+            state: present
+            update_homebrew: no
+      when: brew_status.exists
+
+    - name: "check if fish is installed"
+      stat:
+        path: /usr/local/bin/fish
+      register: fish_status
+
+    - block:
+        - name: "add fish to /etc/shells"
+          lineinfile:
+            path: /etc/shells
+            line: "/usr/local/bin/fish"
+            state: present
+
+        - name: "set default shell to fish"
+          user:
+            name: "{{ ansible_user }}"
+            shell: /usr/local/bin/fish
+      when: fish_status.exists

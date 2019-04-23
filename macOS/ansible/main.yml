@@ -9,13 +9,13 @@
     - block:
         - name: "install homebrew packages"
           homebrew:
-            name: ansible,fish,git,htop,neofetch,node,python,terraform,tree,xz
+            name: ansible,elixir,fish,git,htop,mas,neofetch,node,python,terraform,tree,xz
             state: present
             update_homebrew: yes
 
         - name: "install homebrew casks"
           homebrew_cask:
-            name: atom,bbedit,cyberduck,discord,github,google-chrome,jetbrains-toolbox,messenger,spotify
+            name: atom,bbedit,cyberduck,discord,github,google-chrome,jetbrains-toolbox,spotify,terminus
             state: present
             update_homebrew: no
       when: brew_status.exists
@@ -37,3 +37,19 @@
             name: "{{ ansible_user }}"
             shell: /usr/local/bin/fish
       when: fish_status.exists
+
+    - name: "check if mas is installed"
+      stat:
+        path: /usr/local/bin/mas
+      register: mas_status
+
+    - block:
+        - name: "install Mac App Store apps"
+          shell: "mas install {{ item }}"
+          loop:
+            - "775737590" # iA Writer
+            - "405399194" # Kindle
+            - "407963104" # Pixelmator
+            - "803453959" # Slack
+            - "747648890" # Telegram
+      when: mas_status.exists

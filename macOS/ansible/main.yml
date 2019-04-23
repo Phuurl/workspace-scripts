@@ -44,6 +44,9 @@
       register: mas_status
 
     - block:
+        - name: "ensure Mac App Store apps are up-to-date"
+          shell: "mas upgrade"
+
         - name: "install Mac App Store apps"
           shell: "mas install {{ item }}"
           loop:

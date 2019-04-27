@@ -1,5 +1,7 @@
 # workspace-scripts
 
+[![Build Status](https://travis-ci.com/Phuurl/workspace-scripts.svg?branch=master)](https://travis-ci.com/Phuurl/workspace-scripts)
+
 Scripts I use to automate the setup of new workspaces/environments. Should be considered a WIP.
 
 ## macOS
